@@ -1,3 +1,5 @@
+import JSONSchema
+
 /// Options that control how the model generates its response to a prompt.
 ///
 /// Create a ``GenerationOptions`` structure when you want to adjust
@@ -49,6 +51,9 @@ public struct GenerationOptions: Sendable, Equatable, Codable {
     /// an error will be thrown.
     public var maximumResponseTokens: Int?
 
+    /// Custom properties specific to the model being used.
+    public var custom: [String: JSONValue]
+
     /// Creates generation options that control token sampling behavior.
     ///
     /// - Parameters:
@@ -60,16 +65,19 @@ public struct GenerationOptions: Sendable, Equatable, Codable {
     public init(
         sampling: SamplingMode? = nil,
         temperature: Double? = nil,
-        maximumResponseTokens: Int? = nil
+        maximumResponseTokens: Int? = nil,
+        custom: [String: JSONValue] = [:]
     ) {
         self.sampling = sampling
         self.temperature = temperature
         self.maximumResponseTokens = maximumResponseTokens
+        self.custom = custom
     }
 
     public static func == (a: GenerationOptions, b: GenerationOptions) -> Bool {
         a.sampling == b.sampling && a.temperature == b.temperature
             && a.maximumResponseTokens == b.maximumResponseTokens
+            && a.custom == b.custom
     }
 }
 
